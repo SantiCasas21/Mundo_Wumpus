@@ -314,7 +314,7 @@ void imprimirTablero()
 }
 
 // Imprime la tabla completa de percepciones de TODOS los estados.
-// Se muestra cada turno, tal como piden las condiciones de entrega.
+// Se muestra cada turno
 void imprimirTablaPercepciones() 
 {
     cout << "\n  === TABLA DE PERCEPCIONES (todos los estados) ===\n";
