@@ -1,0 +1,27 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/game/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "localhost", "Port": 5001 }
+      ],
+      "UpstreamPathTemplate": "/api/game/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "Priority": 1
+    },
+    {
+      "DownstreamPathTemplate": "/api/logs/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "localhost", "Port": 5002 }
+      ],
+      "UpstreamPathTemplate": "/api/logs/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "Priority": 1
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5000"
+  }
+}

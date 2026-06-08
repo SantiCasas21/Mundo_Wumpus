@@ -1,0 +1,31 @@
+# =============================================================
+# .dockerignore — Mundo de Wumpus Full-Stack
+# =============================================================
+
+**/bin/
+**/obj/
+**/node_modules/
+**/.git/
+**/.gitignore
+**/.vs/
+**/.vscode/
+**/dist/
+**/build/
+**/Debug/
+**/Release/
+**/*.user
+**/*.suo
+**/.idea/
+
+# Docker
+**/Dockerfile
+**/.dockerignore
+docker-compose*.yml
+
+# Logs
+**/*.log
+**/logs/
+
+# OS
+**/.DS_Store
+**/Thumbs.db

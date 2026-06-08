@@ -1,0 +1,62 @@
+/* =============================================================
+   MUNDO DE WUMPUS — Estilos Globales
+   Dashboard oscuro moderno con tema de exploración
+   ============================================================= */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  color: #e0e0e0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Scrollbar global estilizado */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Selección de texto */
+::selection {
+  background: rgba(240, 192, 64, 0.3);
+  color: #fff;
+}
+
+/* Links */
+a {
+  color: #f0c040;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Animaciones globales */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}

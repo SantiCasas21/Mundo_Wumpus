@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ApiGateway/ApiGateway.csproj" />
+  </Folder>
+  <Folder Name="/src/GameEngine/">
+    <Project Path="src/GameEngine/GameEngine.API/GameEngine.API.csproj" />
+    <Project Path="src/GameEngine/GameEngine.Domain/GameEngine.Domain.csproj" />
+    <Project Path="src/GameEngine/GameEngine.Infrastructure/GameEngine.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/LogService/">
+    <Project Path="src/LogService/LogService.API/LogService.API.csproj" />
+    <Project Path="src/LogService/LogService.Domain/LogService.Domain.csproj" />
+    <Project Path="src/LogService/LogService.Infrastructure/LogService.Infrastructure.csproj" />
+  </Folder>
+</Solution>

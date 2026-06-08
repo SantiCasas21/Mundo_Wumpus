@@ -1,0 +1,120 @@
+# =============================================================
+# MUNDO DE WUMPUS — Full-Stack Docker Compose
+# Levanta: PostgreSQL, GameEngine, LogService, API Gateway y Angular Frontend
+# =============================================================
+
+services:
+  # ===========================================================
+  # Base de Datos PostgreSQL
+  # ===========================================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: wumpus-postgres
+    environment:
+      POSTGRES_USER: wumpus
+      POSTGRES_PASSWORD: wumpus123
+      POSTGRES_MULTIPLE_DATABASES: "wumpus_gameengine,wumpus_logs"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init-multiple-dbs.sh:/docker-entrypoint-initdb.d/init-multiple-dbs.sh
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wumpus"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - wumpus-network
+
+  # ===========================================================
+  # Microservicio: Game Engine
+  # ===========================================================
+  game-engine-api:
+    build:
+      context: ./src/GameEngine
+      dockerfile: GameEngine.API/Dockerfile
+    container_name: wumpus-game-engine
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__GameEngineDb=Host=postgres;Port=5432;Database=wumpus_gameengine;Username=wumpus;Password=wumpus123
+      - Port=5001
+    ports:
+      - "5001:5001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - wumpus-network
+
+  # ===========================================================
+  # Microservicio: Log Service / Leaderboard
+  # ===========================================================
+  log-service-api:
+    build:
+      context: ./src/LogService
+      dockerfile: LogService.API/Dockerfile
+    container_name: wumpus-log-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__LogServiceDb=Host=postgres;Port=5432;Database=wumpus_logs;Username=wumpus;Password=wumpus123
+      - Port=5002
+    ports:
+      - "5002:5002"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - wumpus-network
+
+  # ===========================================================
+  # API Gateway (Ocelot)
+  # ===========================================================
+  api-gateway:
+    build:
+      context: ./src/ApiGateway
+      dockerfile: Dockerfile
+    container_name: wumpus-api-gateway
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - Port=5000
+    ports:
+      - "5000:5000"
+    depends_on:
+      - game-engine-api
+      - log-service-api
+    restart: unless-stopped
+    networks:
+      - wumpus-network
+
+  # ===========================================================
+  # Frontend Angular (servido con Nginx)
+  # ===========================================================
+  wumpus-frontend:
+    build:
+      context: ./src/WumpusFrontend
+      dockerfile: Dockerfile
+    container_name: wumpus-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - api-gateway
+    restart: unless-stopped
+    networks:
+      - wumpus-network
+
+# =============================================================
+# Volúmenes persistentes
+# =============================================================
+volumes:
+  postgres_data:
+    driver: local
+
+# =============================================================
+# Red interna para los microservicios
+# =============================================================
+networks:
+  wumpus-network:
+    driver: bridge
